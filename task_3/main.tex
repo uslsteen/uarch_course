@@ -1,0 +1,161 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage{hyperref}
+\usepackage[warn]{mathtext}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amssymb, amsmath, multicol}
+\usepackage{graphicx}
+\usepackage[shortcuts,cyremdash]{extdash}
+\usepackage{wrapfig}
+\usepackage{floatflt}
+\usepackage{lipsum}
+\usepackage{verbatim}
+\usepackage{concmath}
+\usepackage{euler}
+\usepackage{xcolor}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{subfiles}
+\usepackage{enumitem}
+\usepackage{amsthm}
+\usepackage{indentfirst}
+\usepackage{import}
+
+\begin{document}
+
+\input{include/title.tex}
+
+
+\section{Вопрос}
+
+\textbf{Q: } Объясните смысл и напишите формулы для следующих метрик про
+изводительности процессора IPC, CPI, Performance, Dynamic Power
+
+\textbf{A: }
+
+\begin{enumerate}
+    \item IPC -- среднее число инструкций за такт.
+    \item CPI -- cреднее число тактов на выполнение одной инструкции.
+    \item Performance -- скорость исполнения инструкций.
+    \item Dynamic power -- затраты энергии на перезарядку паразитных емкостей при переключении транзистров в процессоре.
+\end{enumerate}
+
+\begin{equation}
+    IPC = \frac{instructions \:\: count}{clock \:\: cycles}
+\end{equation}
+
+\begin{equation}
+    CPI = \frac{1}{IPC}
+\end{equation}
+
+\begin{equation}
+    Perfomance = \frac{1}{Time} = \frac{1}{N_{instrs} \cdot CPI \cdot T_{cycle}} = \frac{1}{N_{instrs}} \cdot IPC \ cdot f
+\end{equation}
+
+\begin{equation}
+    Dynamic Power = \frac{C_{eff} \cdot (V_{dd})^{2} \cdot f \cdot a}{2}
+\end{equation}
+, где $a$ -- частота переключения транзистора, $f$ -- тактовая частота.
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } Что такое суперскалярный (superscalar) процессор?
+
+\textbf{A: } Суперскалярный (superscalar) процессор - процессор, способный выпонлять две и более инструкций за такт за счет нескольких одинаковых вычислительных устройств, незаивисимо обрабатывающих инструкции одного потока.
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } Какие типы зависимостей по данным существуют? Приведите приме
+ры аппаратных оптимизаций, которые позволяют сократить связан
+ные задержки или разрешить каждый тип зависимостей
+
+\textbf{A: }
+
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } С какой целью инструкцию Store разделяют на микро-операции STA
+(Store address calculation) и STD (Store data calculation) ?
+
+\textbf{A: }
+
+\begin{enumerate}
+    \item STA -- микрооперация, позволяющая вычислить адрес STORE инструкции
+    \item STD -- микрооперация, позволяющая вычислить данные STORE инструкции
+\end{enumerate}
+
+В идеальном процессе исполнения програаммы зависимости между STORE и LOAD минимальны. Откуда вообще берутся зависимости? Наприимер, зависимость между STORE и LOAD
+существуют, если адреса обращения в память инструкций пересекаются. В простом случае исполнения STORE адрес, по которому происходит загрузка в память, не известен до тех пор, пока не будут готовы данные для записи.
+Микрооперация STA позволяет вычилсить адрес обращения в память, пока еще не вычислены данные. Таким образом, полуцчается уменьшить число STORE и LOAD зависимостей.
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } Объясните назначение и функции следующих аппаратных структур:
+ROB, Scheduler Queue (Issue Queue, Reservation Station), RAT, PRF, Load Buffer, Store Buffer
+
+\textbf{A: }
+
+\begin{enumerate}
+    \item ROB, re-order buffer -- буфер для хранения последовательного порядка инструкции при Out Of Order исполнении. При OOO инструкции исполняются непоследовательно, однако порядок исполнения важен и нужен, чтобы знать архитектурное состояние. Таким обзазом, re-order buffer обеспечивает спекулятивное инструкций. Инструкция вытесняется из ROB, обновляя архитектурное состяоне, если она была исполнена и последняя в буфере.
+    \item Scheduler Queue --
+    \item RAT -- таблица соотвествия физических и логических регистров, используемых при алгоритме переименования регистров.
+    \item PRF -- Physical Register File, регистровый файл, в котором описаны все физические регистры процессора.
+    \item Load Buffer, Store Buffer -- буферы для хранения STORE и LOAD инструкций, которые обеспечивают разрешение заивисмостей по данным между STORE и LOAD.
+\end{enumerate}
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } Пусть каждая 5-ая инструкция в процессоре это Branch. Предсказатель
+переходов имеет точность 90\%. Оцените, ROB какого максимального
+размера имеет смысл для такого процессора.
+
+\textbf{A: }
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: }  Что такое Memory Disambiguation?
+
+\textbf{A: }
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } В чем заключается проблема со спекулятивным исполнением Store
+инструкций?
+
+\textbf{A: }
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } Что такое Store forwarding и Load speculation в OOO процессоре?
+
+\textbf{A: }
+
+\newpage
+
+\section{Вопрос}
+
+\textbf{Q: } Что такое Simultaneous Multithreading?
+
+\textbf{A: }
+
+\newpage
+
+
+
+\end{document}
