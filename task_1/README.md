@@ -4,15 +4,28 @@
 
 ## Отчет
 
-- Исходный код реализованных схем предсказания [GAg](https://github.com/uslsteen/ChampSim/blob/uslsteen/branch-prediction/branch/GAg/GAg.cc) и [GAp](https://github.com/uslsteen/ChampSim/tree/uslsteen/branch-prediction/branch/GAp)
+1. Исходный код реализованных схем предсказания [GAg](https://github.com/uslsteen/ChampSim/blob/uslsteen/branch-prediction/branch/GAg/GAg.cc) и [GAp](https://github.com/uslsteen/ChampSim/tree/uslsteen/branch-prediction/branch/GAp)
 
+2. Симулятор был Champsim был запущен на одном и том же наборе бенчмарков с тремя разными стратегиями предсказания переходов. Вкратце
 
+    - ```bimodal``` - один из наиболее простых предсказателей переходов. При работе использует таблицу, где каждый индекс соответсвует подмножеству адресов инструкций. Индекс указывает на счетчик, который отслеживает историю переходов для этих адресов.
 
-- Рассмотрим графики зависимости MPKI (branch mispredictions per KILOinstructions) и IPC (instructions per cycle) от бенчмарков для различных схем предсказания переходов.
+    - ```GAg схема``` - предсказатель переходов, что использует в своей работе глобальную историю бранчей, глобальную таблицу паттернов. История переходов хранится в битовой строке, в которой каждый бит соотвествует тому, был ли совершен последний переход.
+
+    - ```GAp схема``` - предсказатель переходов, cхема которого похожа на ```GAg```, однако теперь адрес инструкции, что предсказывается, имеет собственную таблицу паттернов.
+
+Исходя из алгоритмов работы, предполагаем, что у ```GAp``` схемы будут лучшие показатели как по количеству угаданных переходов, так и по производительности.
+
+3. Рассмотрим графики зависимости MPKI (branch mispredictions per KILOinstructions) и IPC (instructions per cycle) от бенчмарков для различных схем предсказания переходов.
 
 ![img](https://github.com/uslsteen/uarch_course/blob/main/task_1/pics/MPKI.png) ![img](https://github.com/uslsteen/uarch_course/blob/main/task_1/pics/IPC.png)
 
+Как и ожидалось, схема ```GAp``` оказалась наиболее успешной практически для каждого бенчамарка.
 
-- Рассмотрим графики зависимости GMEAN MPKI (branch mispredictions per KILOinstructions) и GMEAN IPC (instructions per cycle) от бенчмарков  для различных схем предсказания переходов.
+Не так однозначна картина для ```GAg```, ведь на 3-4 бенчамарках стратегия проигрывает простому ```bimodal``` как по IPC, так и MPKI. Однако стоит отметить, что разрыв между ```GAg``` и ```bimodal``` не столь значительный по сравнению с ```GAp```.
+
+4. Рассмотрим графики зависимости GMEAN MPKI (branch mispredictions per KILOinstructions) и GMEAN IPC (instructions per cycle) от бенчмарков  для различных схем предсказания переходов.
 
 ![img](https://github.com/uslsteen/uarch_course/blob/main/task_1/pics/GMEAN_MPKI.png) ![img](https://github.com/uslsteen/uarch_course/blob/main/task_1/pics/GMEAN_IPC.png)
+
+Геометрически усреднив значения по всем бенчмаркам, убеждаемся, что ```GAp``` - самая выигрышная схема предсказания переходов.
